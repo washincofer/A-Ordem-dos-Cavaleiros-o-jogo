@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/sophia.tscn" id="1_sophia"]
+
+[node name="PlayerSandbox" type="Node2D"]
+
+[node name="Backdrop" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-1600, -900, 1600, -900, 1600, 900, -1600, 900)
+color = Color(0.12, 0.13, 0.16, 1)
+
+[node name="CombatLane" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-1400, -260, 1400, -260, 1400, 300, -1400, 300)
+color = Color(0.20, 0.18, 0.16, 1)
+
+[node name="Sophia" parent="." instance=ExtResource("1_sophia")]
+position = Vector2(0, 80)
