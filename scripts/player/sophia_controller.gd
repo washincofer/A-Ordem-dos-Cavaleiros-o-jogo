@@ -242,9 +242,12 @@ func _update_animation() -> void:
 	if velocity.length_squared() <= 1.0:
 		_play_if_available("idle")
 	elif Input.is_action_pressed("run") and stamina > 0.0:
-		_play_if_available("run")
+		if sprite.sprite_frames != null and sprite.sprite_frames.has_animation(&"run"):
+			_play_if_available(&"run")
+		else:
+			_play_if_available(&"walk")
 	else:
-		_play_if_available("walk")
+		_play_if_available(&"walk")
 
 	if absf(_last_move_direction.x) > 0.05:
 		sprite.flip_h = _last_move_direction.x < 0.0
