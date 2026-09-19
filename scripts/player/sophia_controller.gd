@@ -42,6 +42,7 @@ enum PlayerState {
 
 @onready var visual_root: Node2D = $VisualRoot
 @onready var sprite: AnimatedSprite2D = $VisualRoot/Sprite
+@onready var placeholder: Polygon2D = $VisualRoot/Placeholder
 
 var state: int = PlayerState.FREE
 var hp: float
@@ -61,6 +62,7 @@ var _last_tap_time: Dictionary = {
 }
 
 func _ready() -> void:
+	_setup_visuals()
 	hp = hp_max
 	stamina = stamina_max
 	_emit_status()
@@ -257,3 +259,14 @@ func _emit_status() -> void:
 	hp_changed.emit(hp, hp_max)
 	stamina_changed.emit(stamina, stamina_max)
 	defense_changed.emit(state == PlayerState.DEFENDING, _defense_cooldown_timer)
+
+
+func _setup_visuals() -> void:
+	if SophiaSpriteLoader.assets_available():
+		sprite.sprite_frames = SophiaSpriteLoader.build()
+		placeholder.visible = false
+		sprite.visible = true
+	else:
+		placeholder.visible = true
+		sprite.visible = false
+		push_warning("Sophia sprite atlases not found. Using placeholder until PNG assets are added.")
