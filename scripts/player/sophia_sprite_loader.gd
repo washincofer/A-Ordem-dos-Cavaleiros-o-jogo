@@ -43,8 +43,8 @@ static func _add_animation(
 	for index in range(FRAME_COUNT):
 		var atlas := AtlasTexture.new()
 		atlas.atlas = texture
-		var column := index % COLUMNS
-		var row := index / COLUMNS
+		var column: int = index % COLUMNS
+		var row: int = int(index / COLUMNS)
 		atlas.region = Rect2(
 			column * CELL_SIZE.x,
 			row * CELL_SIZE.y,
