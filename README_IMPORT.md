@@ -10,7 +10,7 @@ Arquivos:
 Configuração:
 - célula: 192x192px
 - atlas: 5x4
-- idle: 20 frames @ 10 FPS
+- idle: 20 frames @ 6 FPS
 - walk: 20 frames @ 14 FPS
 - pivô sugerido: (96, 184)
 
