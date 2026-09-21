@@ -14,7 +14,7 @@ static func build() -> SpriteFrames:
 	if frames.has_animation(&"default"):
 		frames.remove_animation(&"default")
 
-	_add_animation(frames, &"idle", IDLE_PATH, 10.0, true)
+	_add_animation(frames, &"idle", IDLE_PATH, 6.0, true)
 	_add_animation(frames, &"walk", WALK_PATH, 14.0, true)
 
 	return frames
