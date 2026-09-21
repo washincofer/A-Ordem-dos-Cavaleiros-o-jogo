@@ -83,7 +83,6 @@ func _physics_process(delta: float) -> void:
 		PlayerState.STAGGERED, PlayerState.DOWN:
 			velocity = Vector2.ZERO
 			move_and_slide()
-		_ = delta
 		_:
 			_process_free_movement(delta)
 
