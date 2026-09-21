@@ -4,7 +4,10 @@ config_version=5
 
 [application]
 config/name="A Ordem dos Cavaleiros — O Jogo"
-run/main_scene=""
+run/main_scene="res://scenes/vertical_slice/player_sandbox.tscn"
+
+[autoload]
+InputBootstrap="*res://scripts/core/input_bootstrap.gd"
 
 [display]
 window/size/viewport_width=1280
