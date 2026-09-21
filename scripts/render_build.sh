@@ -16,9 +16,9 @@ TEMPLATES_TPZ="${CACHE_ROOT}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
 TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 WEB_TEMPLATE="${TEMPLATE_DIR}/web_nothreads_release.zip"
 
-EXPORT_WORK_DIR="$ROOT_DIR/build/web_export"
 PUBLISH_DIR="$ROOT_DIR/build/web"
-EXPORT_ZIP="${EXPORT_WORK_DIR}/index.zip"
+EXPORT_HTML="${PUBLISH_DIR}/index.html"
+IMPORT_LOG="$ROOT_DIR/build/godot-import.log"
 
 echo "== A Ordem dos Cavaleiros / Render Web Build =="
 echo "Godot: ${GODOT_VERSION}"
@@ -31,7 +31,7 @@ for command in curl unzip; do
   fi
 done
 
-mkdir -p "$CACHE_ROOT" "$TEMPLATE_DIR" "$EXPORT_WORK_DIR"
+mkdir -p "$CACHE_ROOT" "$TEMPLATE_DIR" "$ROOT_DIR/build"
 
 if [[ ! -x "$EDITOR_BIN" ]]; then
   echo "Downloading Godot editor..."
@@ -64,16 +64,24 @@ fi
 echo "Godot binary version:"
 "$EDITOR_BIN" --version
 
-echo "Importing project resources..."
-"$EDITOR_BIN" --headless --path "$ROOT_DIR" --import
+echo "Importing project resources and validating GDScript..."
+rm -f "$IMPORT_LOG"
+set +e
+"$EDITOR_BIN" --headless --path "$ROOT_DIR" --import >"$IMPORT_LOG" 2>&1
+IMPORT_STATUS=$?
+set -e
+cat "$IMPORT_LOG"
+
+if [[ $IMPORT_STATUS -ne 0 ]] || grep -Eq 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script' "$IMPORT_LOG"; then
+  echo "ERROR: Godot project validation failed. Fix the script errors above before exporting." >&2
+  exit 1
+fi
 
 echo "Exporting single-threaded Web build..."
-rm -rf "$EXPORT_WORK_DIR" "$PUBLISH_DIR"
-mkdir -p "$EXPORT_WORK_DIR" "$PUBLISH_DIR"
+rm -rf "$PUBLISH_DIR"
+mkdir -p "$PUBLISH_DIR"
 
-"$EDITOR_BIN" --headless --path "$ROOT_DIR"   --export-release "Web" "$EXPORT_ZIP"
-
-unzip -q "$EXPORT_ZIP" -d "$PUBLISH_DIR"
+"$EDITOR_BIN" --headless --path "$ROOT_DIR"   --export-release "Web" "$EXPORT_HTML"
 
 if [[ ! -f "$PUBLISH_DIR/index.html" ]]; then
   echo "ERROR: Godot export completed but build/web/index.html was not produced." >&2
