@@ -98,11 +98,9 @@ static func _add_normalized_animation(
 		max_source_width = maxi(max_source_width, source_rect.size.x)
 		max_source_height = maxi(max_source_height, source_rect.size.y)
 
-	var scale_factor := minf(
-		float(MAX_CONTENT_WIDTH) / float(max_source_width),
-		float(MAX_CONTENT_HEIGHT) / float(max_source_height),
-		1.0
-	)
+	var width_scale := float(MAX_CONTENT_WIDTH) / float(max_source_width)
+	var height_scale := float(MAX_CONTENT_HEIGHT) / float(max_source_height)
+	var scale_factor := minf(minf(width_scale, height_scale), 1.0)
 
 	sprite_frames.add_animation(animation_name)
 	sprite_frames.set_animation_speed(animation_name, fps)
