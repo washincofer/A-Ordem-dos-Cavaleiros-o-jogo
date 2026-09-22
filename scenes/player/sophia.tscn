@@ -19,7 +19,7 @@ color = Color(0.1, 0.1, 0.12, 0.45)
 polygon = PackedVector2Array(-17, -54, 17, -54, 20, 24, -20, 24)
 color = Color(0.75, 0.63, 0.28, 1)
 
-[node name="Sprite" type="AnimatedSprite2D" parent="VisualRoot"]
+[node name="Sprite" type="AnimatedSprite2D" parent="VisualRoot"]\nposition = Vector2(0, -146)
 
 [node name="BodyCollision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
